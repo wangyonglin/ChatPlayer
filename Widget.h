@@ -2,6 +2,7 @@
 #define WIDGET_H
 
 #include <QWidget>
+#include "QFFmpegPlayer/QFFmpegPlayer.h"
 
 class Widget : public QWidget
 {
@@ -10,5 +11,9 @@ class Widget : public QWidget
 public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
+private:
+    QFFmpegPlayer *player;
+    void resizeEvent(QResizeEvent *event);
+    void keyPressEvent(QKeyEvent *event);
 };
 #endif // WIDGET_H
