@@ -15,6 +15,7 @@ TARGET = Sample
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 INCLUDEPATH += $$PWD/../SherpaOnnxPlayer
+INCLUDEPATH += $$PWD/../SherpaNcnnPlayer
 INCLUDEPATH += $$PWD/../FFmpegPlayer
 INCLUDEPATH += $$PWD/../NaturalPlayer
 
@@ -25,15 +26,22 @@ linux-g++* {
     message(Compling with linux-g++)
     CONFIG(debug, debug|release){
         message(Debug build)
+        #语音呼唤
         INCLUDEPATH +=$$PWD/../components/sherpa-onnx/include
         INCLUDEPATH +=$$PWD/../components/sherpa-onnx/include/kaldi_decoder-src
         INCLUDEPATH +=$$PWD/../components/sherpa-onnx/include/openfst-src/src/include
         INCLUDEPATH +=$$PWD/../components/sherpa-onnx/include/kaldifst-src
         INCLUDEPATH +=$$PWD/../components/sherpa-onnx/include/onnxruntime-src/include
+        #语音识别
+        INCLUDEPATH +=$$PWD/../components/sherpa-ncnn/include
+        INCLUDEPATH +=$$PWD/../components/sherpa-ncnn/include/ncnn-src/src
+        INCLUDEPATH +=$$PWD/../components/sherpa-ncnn/include/ncnn-build/src
 
+        LIBS += -L$$PWD/../lib/Linux -lSherpaNcnnPlayer
         LIBS += -L$$PWD/../lib/Linux -lSherpaOnnxPlayer
         LIBS += -L$$PWD/../lib/Linux -lFFmpegPlayer
         LIBS += -L$$PWD/../lib/Linux -lNaturalPlayer
+
         LIBS += -L$$PWD/../components/sherpa-onnx/lib/Linux -lonnxruntime
         LIBS += -L$$PWD/../components/sherpa-onnx/lib/Linux -lcargs
         LIBS += -L$$PWD/../components/sherpa-onnx/lib/Linux -lsherpa-onnx-fst
@@ -48,6 +56,14 @@ linux-g++* {
         LIBS += -L$$PWD/../components/sherpa-onnx/lib/Linux -lsherpa-onnx-c-api
         LIBS += -L$$PWD/../components/sherpa-onnx/lib/Linux -lucd
         LIBS += -L$$PWD/../components/sherpa-onnx/lib/Linux -lsherpa-onnx-core
+        #libkaldi-native-fbank-core.a  libsherpa-ncnn-core.a
+        #libncnn.a                     libsherpa-ncnn-portaudio_static.a
+        #libsherpa-ncnn-c-api.a
+        LIBS += -L$$PWD/../components/sherpa-ncnn/lib/Linux -lkaldi-native-fbank-core
+        LIBS += -L$$PWD/../components/sherpa-ncnn/lib/Linux -lsherpa-ncnn-core
+        LIBS += -L$$PWD/../components/sherpa-ncnn/lib/Linux -lncnn
+        LIBS += -L$$PWD/../components/sherpa-ncnn/lib/Linux -lsherpa-ncnn-portaudio_static
+        LIBS += -L$$PWD/../components/sherpa-ncnn/lib/Linux -lsherpa-ncnn-c-api
 
         INCLUDEPATH +=$$PWD/../components/sherpa-onnx/include/kaldi_native_fbank-src
         INCLUDEPATH +=$$PWD/../components/sherpa-onnx/include/simple-sentencepiece-src
@@ -56,6 +72,7 @@ linux-g++* {
         SOURCES +=$$PWD/../components/sherpa-onnx/src/sherpa-onnx/csrc/features.cc
 
         #LIBS += -L$$PWD/../lib/Linux -lLive2DCubismCore
+
         DEPENDPATH += $$PWD/../dll
         release
 
@@ -125,9 +142,11 @@ DISTFILES += \
     README.md
 
 HEADERS += \
+    ASRFramePlayer.h \
     SampleWidget.h
 
 SOURCES += \
+    ASRFramePlayer.cpp \
     ASRThreader.cpp \
     SampleWidget.cpp \
     main.cpp

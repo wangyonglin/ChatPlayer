@@ -5,20 +5,20 @@
 #include <QSettings>
 #include <QDebug>
 #include <QCoreApplication>
+#include "QSettingEnergies.h"
 
-class ConfigSherpaOnnxPlayer : public QSettings
+class SherpaOnnxQSettings : public QSettingEnergies
 {
     Q_OBJECT
 
 public:
-    enum StateSherpaOnnxPlayer{none=-1,off,on};
-    explicit ConfigSherpaOnnxPlayer(QObject *parent = nullptr);
+    explicit SherpaOnnxQSettings(QObject *parent = nullptr);
 public:
     //ASR
     int asr_sample_rate;
     int asr_channel_count;
     int asr_sample_size;
-    StateSherpaOnnxPlayer asr_speaker_play=off;
+    State asr_speaker_play=off;
 
     //sherpa_onnx
     int sherpa_onnx_sampling_rate=16000;
@@ -31,7 +31,7 @@ public:
     QString sherpa_onnx_keywords="";
     QString sherpa_onnx_provider="cpu";
     int sherpa_onnx_debug=1;
-    StateSherpaOnnxPlayer sherpa_onnx_start=off;
+    State sherpa_onnx_start=off;
 
     //sherpa_ncnn
     int sherpa_ncnn_sampling_rate=16000;
@@ -50,8 +50,6 @@ public:
     QString sherpa_ncnn_joiner_bin = "";
     QString sherpa_ncnn_method ="greedy_search";
 
-private:
-    StateSherpaOnnxPlayer loadState(const QString &string);
 };
 
 #endif // CONFIGSHERPAONNXPLAYER_H

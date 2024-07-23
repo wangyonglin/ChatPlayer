@@ -6,9 +6,8 @@
 #include <QApplication>
 
 #include "QFFmpegPlayer.h"
-#include "SherpaOnnxPlayer.h"
-#include "SoundThreader.h"
-#include "BaseSpeaker.h"
+#include "ASRFramePlayer.h"
+
 
 
 class SampleWidget : public QWidget
@@ -18,15 +17,9 @@ class SampleWidget : public QWidget
 public:
     SampleWidget(QWidget *parent = nullptr);
     ~SampleWidget();
-private slots:
-    void UpdateMicrophone(QByteArray buffer);
 private:
-    ConfigSherpaOnnxPlayer *config;
-
-    SoundThreader * mSoundThreader;
-    BaseSpeaker * mBaseSpeaker;
     QFFmpegPlayer *qFFmpegPlayer;
-    SherpaOnnxPlayer * mSherpaOnnxPlayer;
+    ASRFramePlayer * qASRFramePlayer;
     void resizeEvent(QResizeEvent *event);
     void keyPressEvent(QKeyEvent *event);
 };

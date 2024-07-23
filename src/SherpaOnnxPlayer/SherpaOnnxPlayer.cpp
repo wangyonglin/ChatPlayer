@@ -3,7 +3,7 @@
 SherpaOnnxPlayer::SherpaOnnxPlayer(QObject *parent)
     : QObject{parent}
 {
-
+    this->setting= new SherpaOnnxQSettings(this);
 }
 
 SherpaOnnxPlayer::~SherpaOnnxPlayer()
@@ -12,10 +12,10 @@ SherpaOnnxPlayer::~SherpaOnnxPlayer()
 }
 
 
-bool SherpaOnnxPlayer::InitRecognizer(ConfigSherpaOnnxPlayer * setting)
+bool SherpaOnnxPlayer::InitRecognizer()
 {
 
-    sherpa_onnx::KeywordSpotterConfig config= createKeywordSpotter(setting);
+    sherpa_onnx::KeywordSpotterConfig config= createKeywordSpotter();
     expected_sampling_rate=setting->sherpa_onnx_sampling_rate;
     kws= std::make_unique<sherpa_onnx::KeywordSpotter>(config);
     kws_stream=kws->CreateStream();
@@ -60,7 +60,7 @@ QString SherpaOnnxPlayer::RunRecognizer(QByteArray & bytes)
     }
     return QString();
 }
-sherpa_onnx::KeywordSpotterConfig SherpaOnnxPlayer:: createKeywordSpotter(ConfigSherpaOnnxPlayer * setting)
+sherpa_onnx::KeywordSpotterConfig SherpaOnnxPlayer:: createKeywordSpotter()
 {
     sherpa_onnx::FeatureExtractorConfig feat_config;
     feat_config.sampling_rate=setting->sherpa_onnx_sampling_rate;

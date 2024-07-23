@@ -18,6 +18,7 @@ int main(int argc, char *argv[])
         }
     }
     SampleWidget w;
+    w.resize(1028,760);
     w.show();
     return a.exec();
 }

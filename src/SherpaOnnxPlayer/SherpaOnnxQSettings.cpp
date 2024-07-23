@@ -1,8 +1,8 @@
-#include "ConfigSherpaOnnxPlayer.h"
+#include "SherpaOnnxQSettings.h"
 
 
-ConfigSherpaOnnxPlayer::ConfigSherpaOnnxPlayer(QObject *parent)
-    : QSettings("/home/wangyonglin/QSpeechRecognizer/conf/kylin.conf", QSettings::IniFormat,parent),
+SherpaOnnxQSettings::SherpaOnnxQSettings(QObject *parent)
+     : QSettingEnergies("/home/wangyonglin/QSpeechRecognizer/conf/kylin.conf",parent),
     asr_sample_rate(16000),
     asr_channel_count(1),
     asr_sample_size(16),
@@ -36,7 +36,7 @@ ConfigSherpaOnnxPlayer::ConfigSherpaOnnxPlayer(QObject *parent)
     asr_sample_rate=value("ASR/sample_rate").toInt();
     asr_channel_count=value("ASR/channel_count").toInt();
     asr_sample_size=value("ASR/sample_size").toInt();
-    asr_speaker_play=loadState(value("ASR/speaker_play").toString());
+    asr_speaker_play=loadedState(value("ASR/speaker_play").toString());
 
     // qDebug() << "asr_sample_rate:" << asr_sample_rate;
     // qDebug() << "asr_channel_count:" << asr_channel_count;
@@ -54,7 +54,7 @@ ConfigSherpaOnnxPlayer::ConfigSherpaOnnxPlayer(QObject *parent)
     sherpa_onnx_provider=value("SHERPA_ONNX/provider").toString();
     sherpa_onnx_debug=value("SHERPA_ONNX/debug").toInt();
     sherpa_onnx_keywords=value("SHERPA_ONNX/keywords").toString();
-    sherpa_onnx_start=loadState(value("SHERPA_ONNX/start").toString());
+    sherpa_onnx_start=loadedState(value("SHERPA_ONNX/start").toString());
 
     // qDebug() << "sherpa_onnx_sampling_rate:" << sherpa_onnx_sampling_rate;
     // qDebug() << "sherpa_onnx_feature_dim:" << sherpa_onnx_feature_dim;
@@ -99,16 +99,5 @@ ConfigSherpaOnnxPlayer::ConfigSherpaOnnxPlayer(QObject *parent)
     // qDebug() << "sherpa_ncnn_method:" << sherpa_ncnn_method;
     // qDebug() << "sherpa_ncnn_num_threads:" << sherpa_ncnn_num_threads;
 
-}
-
-ConfigSherpaOnnxPlayer::StateSherpaOnnxPlayer ConfigSherpaOnnxPlayer::loadState(const QString &string)
-{
-    if((string == QString::fromLocal8Bit("on")) || (string== QString::fromLocal8Bit("ON")) || (string== QString::fromLocal8Bit("On")))
-    {
-        return on;
-    }else if ((string == QString::fromLocal8Bit("off")) || (string== QString::fromLocal8Bit("OFF")) || (string== QString::fromLocal8Bit("Off"))){
-        return off;
-    }
-    return none;
 }
 

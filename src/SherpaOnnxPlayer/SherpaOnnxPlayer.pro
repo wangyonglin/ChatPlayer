@@ -85,9 +85,9 @@ win32-g++*{
 }
 
 HEADERS += \
-    ConfigSherpaOnnxPlayer.h \
-    SherpaOnnxPlayer.h
+    SherpaOnnxPlayer.h \
+    SherpaOnnxQSettings.h
 
 SOURCES += \
-    ConfigSherpaOnnxPlayer.cpp \
-    SherpaOnnxPlayer.cpp
+    SherpaOnnxPlayer.cpp \
+    SherpaOnnxQSettings.cpp
