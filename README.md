@@ -1,2 +1,0 @@
-# ChatPlayer
-ChatPlayer by QT

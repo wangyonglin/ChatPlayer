@@ -1,29 +1,24 @@
-QT       += core gui multimedia opengl
+TEMPLATE = subdirs
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+SUBDIRS = \
+          SherpaOnnxPlayer \
+          FFmpegPlayer \
+          NaturalPlayer \
+          Sample
 
-CONFIG += c++17
-include($$PWD/QFFmpegPlayer/QFFmpegPlayer.pri)
-# You can make your code fail to compile if it uses deprecated APIs.
-# In order to do so, uncomment the following line.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+# where to find the sub projects - give the folders
+NaturalPlayer.subdir = src/NaturalPlayer
 
-SOURCES += \
-    main.cpp \
-    Widget.cpp
+SherpaOnnxPlayer.subdir = src/SherpaOnnxPlayer
+FFmpegPlayer.subdir = src/FFmpegPlayer
+Sample.subdir  = src/Sample
 
-HEADERS += \
-    Widget.h
+# what subproject depends on others'
+SherpaOnnxPlayer.depends = NaturalPlayer
 
-TRANSLATIONS += \
-    ChatPlayer_zh_CN.ts
-CONFIG += lrelease
-CONFIG += embed_translations
 
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
+# what subproject depends on others'
+Sample.depends = NaturalPlayer
+Sample.depends = SherpaOnnxPlayer
+Sample.depends = FFmpegPlayer
 
-DISTFILES += \
-    README.md
