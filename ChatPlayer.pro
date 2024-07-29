@@ -4,11 +4,11 @@ SUBDIRS = \
           SherpaNcnnPlayer \
           SherpaOnnxPlayer \
           FFmpegPlayer \
-          NaturalPlayer \
+          Bootstrap \
           Sample
 
 # where to find the sub projects - give the folders
-NaturalPlayer.subdir = src/NaturalPlayer
+Bootstrap.subdir = src/Bootstrap
 
 SherpaNcnnPlayer.subdir = src/SherpaNcnnPlayer
 SherpaOnnxPlayer.subdir = src/SherpaOnnxPlayer
@@ -17,12 +17,12 @@ FFmpegPlayer.subdir = src/FFmpegPlayer
 Sample.subdir  = src/Sample
 
 # what subproject depends on others'
-SherpaOnnxPlayer.depends = NaturalPlayer
+SherpaOnnxPlayer.depends = Bootstrap
 
 
 # what subproject depends on others'
 Sample.depends = SherpaNcnnPlayer
-Sample.depends = NaturalPlayer
+Sample.depends = Bootstrap
 Sample.depends = SherpaOnnxPlayer
 Sample.depends = FFmpegPlayer
 

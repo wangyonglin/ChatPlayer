@@ -17,7 +17,7 @@ TARGET = Sample
 INCLUDEPATH += $$PWD/../SherpaOnnxPlayer
 INCLUDEPATH += $$PWD/../SherpaNcnnPlayer
 INCLUDEPATH += $$PWD/../FFmpegPlayer
-INCLUDEPATH += $$PWD/../NaturalPlayer
+INCLUDEPATH += $$PWD/../Bootstrap
 
 CONFIG += debug_and_release
 
@@ -40,7 +40,7 @@ linux-g++* {
         LIBS += -L$$PWD/../lib/Linux -lSherpaNcnnPlayer
         LIBS += -L$$PWD/../lib/Linux -lSherpaOnnxPlayer
         LIBS += -L$$PWD/../lib/Linux -lFFmpegPlayer
-        LIBS += -L$$PWD/../lib/Linux -lNaturalPlayer
+        LIBS += -L$$PWD/../lib/Linux -lBootstrap
 
         LIBS += -L$$PWD/../components/sherpa-onnx/lib/Linux -lonnxruntime
         LIBS += -L$$PWD/../components/sherpa-onnx/lib/Linux -lcargs
@@ -91,6 +91,11 @@ linux-g++* {
     LIBS += -lswscale
     LIBS += -lswresample
     LIBS += -lcblas
+    LIBS += -lopencv_core
+    LIBS += -lopencv_highgui
+    LIBS += -lopencv_imgcodecs
+    LIBS += -lopencv_imgproc
+    LIBS += -lopencv_videoio
     LIBS += -Wall -lpthread
     LIBS  += -Wall -lpthread  -lgomp -lcblas
 }
@@ -133,7 +138,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 # resources.files = $$PWD/Resources
 # resources.path = $$OUT_PWD
-
 
 COPIES += resources
 

@@ -5,9 +5,9 @@
 #include <QSettings>
 #include <QDebug>
 #include <QCoreApplication>
-#include "QSettingEnergies.h"
+#include "QBootstrap.h"
 
-class SherpaOnnxQSettings : public QSettingEnergies
+class SherpaOnnxQSettings : public QBootstrap
 {
     Q_OBJECT
 

@@ -7,7 +7,7 @@
 
 #include "QFFmpegPlayer.h"
 #include "ASRFramePlayer.h"
-
+#include "CameraPlayer.h"
 
 
 class SampleWidget : public QWidget
@@ -18,9 +18,15 @@ public:
     SampleWidget(QWidget *parent = nullptr);
     ~SampleWidget();
 private:
+    CameraPlayer *qCameraPlayer;
     QFFmpegPlayer *qFFmpegPlayer;
     ASRFramePlayer * qASRFramePlayer;
-    void resizeEvent(QResizeEvent *event);
-    void keyPressEvent(QKeyEvent *event);
+
+
+    // QWidget interface
+protected:
+    virtual void paintEvent(QPaintEvent *event) override;
+    virtual void resizeEvent(QResizeEvent *event) override;
+    virtual void keyPressEvent(QKeyEvent *event) override;
 };
 #endif // SAMPLEWIDGET_H

@@ -3,7 +3,7 @@ CONFIG += staticlib
 QT       += core gui multimedia opengl
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-INCLUDEPATH += $$PWD/../NaturalPlayer
+INCLUDEPATH += $$PWD/../Bootstrap
 
 linux-g++* {
     CONFIG(debug, debug|release){
