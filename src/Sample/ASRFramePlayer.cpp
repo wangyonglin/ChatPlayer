@@ -35,7 +35,14 @@ ASRFramePlayer::ASRFramePlayer(QWidget *parent)
 
 
 }
-
+void ASRFramePlayer::setFontSize(int size)
+{
+    textSize=size;
+}
+void ASRFramePlayer::setFontColor(const QColor &color)
+{
+    textColor=color;
+}
 ASRFramePlayer::~ASRFramePlayer()
 {
     mSoundThreader->loopStop();
@@ -50,12 +57,16 @@ void ASRFramePlayer::paintEvent(QPaintEvent *event)
     font.setPointSize(textSize);
     font.setBold(true);
     // QFontMetrics metrics(font); // 创建 QFontMetrics 对象
-    // int width = metrics.horizontalAdvance(str); // 计算文本的水平宽度
+    // int width = metrics.horizontalAdvance(ASRFrameTextBuffer); // 计算文本的水平宽度
     // int height = metrics.ascent(); // 计算文本的垂直高度
     // QRect rect((this->width()-width)/2, (this->height()-height)/2, width, height); // 根据widget大小计算居中对齐位置
     QPen fontColor(textColor); // 设置字体颜色为红色
     painter.setPen(fontColor);
-    return PaintStrokeText(&painter,rect(),ASRFrameTextBuffer,font,strokeWidth,strokeColor,QTextOption(Qt::AlignCenter));
+    //return PaintStrokeText(&painter,rect(),ASRFrameTextBuffer,font,strokeWidth,strokeColor,QTextOption(Qt::AlignCenter));
+
+    QTextOption option(Qt::AlignCenter | Qt::AlignVCenter);
+    option.setWrapMode(QTextOption::WordWrap);
+    return PaintStrokeText(&painter,rect(),ASRFrameTextBuffer,font,strokeWidth,strokeColor,option);
 }
 
 ///

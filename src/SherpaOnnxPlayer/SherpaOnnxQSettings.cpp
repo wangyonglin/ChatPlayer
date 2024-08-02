@@ -2,7 +2,7 @@
 
 
 SherpaOnnxQSettings::SherpaOnnxQSettings(QObject *parent)
-     : QBootstrap("/home/wangyonglin/QSpeechRecognizer/conf/kylin.conf",parent),
+     : Settings("/home/wangyonglin/QSpeechRecognizer/conf/kylin.conf",parent),
     asr_sample_rate(16000),
     asr_channel_count(1),
     asr_sample_size(16),

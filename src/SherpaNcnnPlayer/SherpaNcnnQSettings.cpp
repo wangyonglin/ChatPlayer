@@ -1,7 +1,7 @@
 #include "SherpaNcnnQSettings.h"
 
 SherpaNcnnQSettings::SherpaNcnnQSettings(QObject *parent)
-    : QBootstrap("/home/wangyonglin/QSpeechRecognizer/conf/kylin.conf",parent),
+    : Settings("/home/wangyonglin/QSpeechRecognizer/conf/kylin.conf",parent),
     sherpa_ncnn_sampling_rate(16000),
     sherpa_ncnn_feature_dim(80),
     sherpa_ncnn_rule1_min_trailing_silence(2.4),

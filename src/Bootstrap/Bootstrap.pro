@@ -55,14 +55,14 @@ win32-g++*{
 HEADERS += \
     BaseSpeaker.h \
     BaseThreader.h \
-    CameraPlayer.h \
-    QBootstrap.h \
-    SoundThreader.h
+    Settings.h \
+    SoundThreader.h \
+    _CameraPlayer.h
 
 SOURCES += \
     BaseSpeaker.cpp \
     BaseThreader.cpp \
-    CameraPlayer.cpp \
-    QBootstrap.cpp \
-    SoundThreader.cpp
+    Settings.cpp \
+    SoundThreader.cpp \
+    _CameraPlayer.cpp
 

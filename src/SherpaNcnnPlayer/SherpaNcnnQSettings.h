@@ -3,9 +3,9 @@
 
 #include <QObject>
 #include <QSettings>
-#include "QBootstrap.h"
+#include "Settings.h"
 
-class SherpaNcnnQSettings : public QBootstrap
+class SherpaNcnnQSettings : public Settings
 {
     Q_OBJECT
 public:

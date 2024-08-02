@@ -1,11 +1,11 @@
-#include "QBootstrap.h"
+#include "Settings.h"
 
-QBootstrap::QBootstrap(const QString & filename,QObject *parent)
+Settings::Settings(const QString & filename,QObject *parent)
     : QSettings(filename, QSettings::IniFormat,parent)
 {
 
 }
-QBootstrap::State QBootstrap::loadedState(const QString &string)
+Settings::State Settings::loadedState(const QString &string)
 {
     if((string == QString::fromLocal8Bit("on")) || (string== QString::fromLocal8Bit("ON")) || (string== QString::fromLocal8Bit("On")))
     {

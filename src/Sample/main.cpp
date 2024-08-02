@@ -1,4 +1,4 @@
-#include "SampleWidget.h"
+#include "UserWidget.h"
 
 #include <QApplication>
 #include <QLocale>
@@ -17,8 +17,13 @@ int main(int argc, char *argv[])
             break;
         }
     }
-    SampleWidget w;
-    w.resize(720,1080);
+    UserWidget w;
+    // 设置窗口的最小大小为800x600像素
+    w.setMinimumSize(QSize(480, 720));
+    //w.setMinimumSize(QSize(720, 1080));
+    // 设置窗口的最大大小为800x600像素
+    w.setMaximumSize(QSize(480, 720));
+    //w.setMaximumSize(QSize(1080, 1960));
     w.show();
     return a.exec();
 }

@@ -5,9 +5,9 @@
 #include <QSettings>
 #include <QDebug>
 #include <QCoreApplication>
-#include "QBootstrap.h"
+#include "Settings.h"
 
-class SherpaOnnxQSettings : public QBootstrap
+class SherpaOnnxQSettings : public Settings
 {
     Q_OBJECT
 

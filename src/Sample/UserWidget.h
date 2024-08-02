@@ -1,26 +1,25 @@
-#ifndef SAMPLEWIDGET_H
-#define SAMPLEWIDGET_H
+#ifndef USERWIDGET_H
+#define USERWIDGET_H
 
 #include <QWidget>
 #include <QKeyEvent>
 #include <QApplication>
 
 #include "QFFmpegPlayer.h"
-#include "ASRFramePlayer.h"
 #include "CameraPlayer.h"
+#include "MaskPlayer.h"
 
-
-class SampleWidget : public QWidget
+class UserWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    SampleWidget(QWidget *parent = nullptr);
-    ~SampleWidget();
+    UserWidget(QWidget *parent = nullptr);
+    ~UserWidget();
 private:
     CameraPlayer *qCameraPlayer;
     QFFmpegPlayer *qFFmpegPlayer;
-    ASRFramePlayer * qASRFramePlayer;
+    MaskPlayer * qMaskPlayer;
 
 
     // QWidget interface
@@ -29,4 +28,4 @@ protected:
     virtual void resizeEvent(QResizeEvent *event) override;
     virtual void keyPressEvent(QKeyEvent *event) override;
 };
-#endif // SAMPLEWIDGET_H
+#endif // USERWIDGET_H

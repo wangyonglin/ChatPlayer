@@ -147,10 +147,17 @@ DISTFILES += \
 
 HEADERS += \
     ASRFramePlayer.h \
-    SampleWidget.h
+    CameraPlayer.h \
+    MaskPlayer.h \
+    UserWidget.h
 
 SOURCES += \
     ASRFramePlayer.cpp \
     ASRThreader.cpp \
-    SampleWidget.cpp \
+    CameraPlayer.cpp \
+    MaskPlayer.cpp \
+    UserWidget.cpp \
     main.cpp
+
+RESOURCES += \
+    ../images/images.qrc

@@ -24,6 +24,8 @@ class ASRFramePlayer : public QWidget
 public:
     explicit ASRFramePlayer(QWidget *parent = nullptr);
     ~ASRFramePlayer();
+    void setFontSize(int fontsize);
+    void setFontColor(const QColor &fontcolor);
 private:
     SoundThreader * mSoundThreader;
     BaseSpeaker * mBaseSpeaker;

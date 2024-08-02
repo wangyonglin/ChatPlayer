@@ -1,16 +1,23 @@
-#include "SampleWidget.h"
+#include "UserWidget.h"
 #include <QMessageBox>
+#include <QStackedWidget>
+#include <QSplitter>
 
-SampleWidget::SampleWidget(QWidget *parent)
+UserWidget::UserWidget(QWidget *parent)
     : QWidget(parent),
     qFFmpegPlayer(new QFFmpegPlayer(this)),
-    qASRFramePlayer(new ASRFramePlayer(this)),
-    qCameraPlayer(new CameraPlayer(this))
+    qCameraPlayer(new CameraPlayer(this)),
+    qMaskPlayer(new MaskPlayer(qFFmpegPlayer))
 {
+    setAutoFillBackground(true);
 
+
+    qCameraPlayer->InitASRFramePlayer(QRect(0,120,480,360),26,QColor(255,255,255));
     QVBoxLayout *layout = new QVBoxLayout(this);
-    layout->setMargin(0);
     layout->setSpacing(0);
+    layout->setMargin(0);
+    qFFmpegPlayer->setStyleSheet("QFFmpegPlayer { min-width: 480px; min-height: 480px; }");
+    qCameraPlayer->setStyleSheet("CameraPlayer { min-width: 480px; min-height: 360px; }");
     layout->addWidget(qFFmpegPlayer);
     layout->addWidget(qCameraPlayer);
     setLayout(layout);
@@ -18,29 +25,30 @@ SampleWidget::SampleWidget(QWidget *parent)
     //qCameraPlayer->InitMatting(35, 43, 46,155, 255, 255);
     qCameraPlayer->Play("/dev/video0");
 
-}
-
-SampleWidget::~SampleWidget() {
 
 }
 
-void SampleWidget::paintEvent(QPaintEvent *event)
+UserWidget::~UserWidget() {
+
+}
+
+void UserWidget::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
     QPainter painter(this);
-    painter.setBrush(Qt::red);
-    painter.drawRect(rect());
+    painter.setBrush(Qt::black);
+    QPixmap pixmap(":/images/edddc90e94c3e353638759be1d29bb4e.jpeg"); // 替换为你的图片路径
+    painter.drawPixmap(rect(),pixmap);
 
 }
 
-void SampleWidget::resizeEvent(QResizeEvent *event)
+void UserWidget::resizeEvent(QResizeEvent *event)
 {
-    qASRFramePlayer->resize(event->size());
-    qFFmpegPlayer->resize(event->size().width(),event->size().height()/2);
-    qCameraPlayer->resize(event->size().width(),event->size().height()/2);
+    qFFmpegPlayer->resize(480,480);
+    qMaskPlayer->resize(480,480);
 }
 
-void SampleWidget::keyPressEvent(QKeyEvent *event)
+void UserWidget::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape) {
         if (QMessageBox::question(this, "退出", "确定要退出吗？", QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
