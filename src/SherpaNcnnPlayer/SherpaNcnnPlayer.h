@@ -10,14 +10,21 @@
 #include <QBuffer>
 #include <QResizeEvent>
 #include <SherpaNcnnQSettings.h>
+
 class SherpaNcnnPlayer : public QObject
 {
     Q_OBJECT
 public:
+    typedef struct ResultText{
+        bool finish=false;
+        QString text;
+    }ResultText;
+public:
     explicit SherpaNcnnPlayer(QObject *parent = nullptr);
     bool InitRecognizer();
-    QString RunRecognizer(QByteArray &bytes);
+    ResultText buildText(QByteArray &bytes);
 
+    ResultText buildResultText(bool finish=false,const QString & text="");
 private:
     SherpaNcnnQSettings *setting;
     qint32 segment_index = 0;
@@ -27,7 +34,7 @@ private:
 
 signals:
     void onTalkText(qint32 segment_index,const QString& last_text);
-    void finishRecognizer();
+    void onTalkFinish(const QString& last_text);
 };
 
 #endif // SHERPANCNNPLAYER_H

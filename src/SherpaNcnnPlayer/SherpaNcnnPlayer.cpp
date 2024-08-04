@@ -51,14 +51,15 @@ bool SherpaNcnnPlayer::InitRecognizer()
     return true;
 }
 
-QString SherpaNcnnPlayer::RunRecognizer(QByteArray & bytes)
+SherpaNcnnPlayer::ResultText SherpaNcnnPlayer::buildText(QByteArray & bytes)
 {
 
-    if(bytes.isEmpty())return QString();
+
+    if(bytes.isEmpty())return buildResultText();
     // 确保data的大小是4的倍数
     if (bytes.size() % sizeof(float) != 0) {
         // 处理错误，例如抛出异常或返回空向量
-        return QString();
+        return buildResultText();
     }
     std::vector<float> floatVector;
     QDataStream data_stream(bytes);
@@ -73,37 +74,45 @@ QString SherpaNcnnPlayer::RunRecognizer(QByteArray & bytes)
     //开始推理
     //  auto begin = std::chrono::steady_clock::now();
     // Q_UNUSED(begin);
-    if (1) {
-        stream->AcceptWaveform(16000, floatVector.data(),floatVector.size());
-        // std::vector<float> tail_paddings(static_cast<int>(0.3 * expected_sampling_rate));  // 0.3 seconds at 16 kHz sample rate
-        //  stream->AcceptWaveform(expected_sampling_rate, tail_paddings.data(),tail_paddings.size());
-        stream->InputFinished();
-        while (recognizer->IsReady(stream.get())) {
-            recognizer->DecodeStream(stream.get());
-        }
-        bool is_endpoint = recognizer->IsEndpoint(stream.get());
-        auto text = recognizer->GetResult(stream.get()).text;
 
-
-        if (!text.empty() && last_text!=text) {
-            last_text = text;
-            std::transform(text.begin(), text.end(), text.begin(),
-                           [](auto c) {
-                               return std::tolower(c);
-                           });
-
-        }
-        if (is_endpoint) {
-            emit finishRecognizer();
-            if (!text.empty()) {
-                (segment_index)++;
-            }
-            recognizer->Reset(stream.get());
-        }
+    stream->AcceptWaveform(16000, floatVector.data(),floatVector.size());
+    // std::vector<float> tail_paddings(static_cast<int>(0.3 * expected_sampling_rate));  // 0.3 seconds at 16 kHz sample rate
+    //  stream->AcceptWaveform(expected_sampling_rate, tail_paddings.data(),tail_paddings.size());
+    stream->InputFinished();
+    while (recognizer->IsReady(stream.get())) {
+        recognizer->DecodeStream(stream.get());
     }
+    bool is_endpoint = recognizer->IsEndpoint(stream.get());
+    auto text = recognizer->GetResult(stream.get()).text;
 
-    return  QString::fromStdString(last_text);
+
+    if (!text.empty() && last_text!=text) {
+        last_text = text;
+        std::transform(text.begin(), text.end(), text.begin(),
+                       [](auto c) {
+                           return std::tolower(c);
+                       });
+
+    }
+    if (is_endpoint) {
+        //  emit onTalkFinish(QString::fromStdString(last_text));
+        if (!text.empty()) {
+            (segment_index)++;
+        }
+        recognizer->Reset(stream.get());
+        return  buildResultText(is_endpoint,QString::fromStdString(last_text));
+    }
+    return  buildResultText(is_endpoint,QString::fromStdString(last_text));
 }
+
+SherpaNcnnPlayer::ResultText SherpaNcnnPlayer::buildResultText(bool finish, const QString &text)
+{
+    SherpaNcnnPlayer::ResultText qResultText;
+    qResultText.finish=finish;
+    qResultText.text=text;
+    return qResultText;
+}
+
 
 
 

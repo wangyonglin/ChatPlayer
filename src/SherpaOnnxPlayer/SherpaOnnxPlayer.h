@@ -20,7 +20,7 @@ class SherpaOnnxPlayer : public QObject
 public:
     explicit SherpaOnnxPlayer(QObject *parent = nullptr);
     ~SherpaOnnxPlayer();
-    QString RunRecognizer(QByteArray & bytes);
+    QString buildText(const QByteArray & bytes);
     bool InitRecognizer();
 
 signals:

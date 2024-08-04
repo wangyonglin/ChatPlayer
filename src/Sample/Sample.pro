@@ -147,14 +147,17 @@ DISTFILES += \
 
 HEADERS += \
     ASRFramePlayer.h \
+    ASRFrameThreader.h \
     CameraPlayer.h \
+    GamePlayer.h \
     MaskPlayer.h \
     UserWidget.h
 
 SOURCES += \
     ASRFramePlayer.cpp \
-    ASRThreader.cpp \
+    ASRFrameThreader.cpp \
     CameraPlayer.cpp \
+    GamePlayer.cpp \
     MaskPlayer.cpp \
     UserWidget.cpp \
     main.cpp

@@ -35,9 +35,9 @@ void MaskPlayer::paintEvent(QPaintEvent *event)
     titlePainter.setPen(pen);
     titlePainter.drawText(QRect(0,410,width(),42), Qt::AlignHCenter, tr("单号(%1) 鞋码(%2)").arg(888).arg(42));
 
-    QPainter logoPainter(this);
-    QRect logoRect(0,0,160,100);
-    logoPainter.drawImage(logoRect,QImage(":/images/logo.jpeg"));
+    // QPainter logoPainter(this);
+    // QRect logoRect(0,0,160,100);
+    // logoPainter.drawImage(logoRect,QImage(":/images/logo.jpeg"));
 }
 
 void MaskPlayer::resizeEvent(QResizeEvent *event)

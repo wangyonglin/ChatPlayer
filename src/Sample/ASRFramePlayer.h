@@ -13,7 +13,7 @@
 #include "SoundThreader.h"
 #include "BaseSpeaker.h"
 #include "SherpaNcnnPlayer.h"
-
+#include "ASRFrameThreader.h"
 class QSettings;
 class QHBoxLayout;
 class QLabel;
@@ -31,22 +31,26 @@ private:
     BaseSpeaker * mBaseSpeaker;
     SherpaOnnxPlayer * mSherpaOnnxPlayer;
     SherpaNcnnPlayer * mSherpaNcnnPlayer;
+    bool bNCNNState=false;
 private:
     int strokeWidth;
     QColor strokeColor;
     int     textSize;//显示字体大小
     QColor  textColor;//字体颜色
-    QString ASRFrameTextBuffer="";
-    QTimer timer;
+    QString mFrameTextBuffer="";
     QString GetTextByWidth(const QFontMetrics &fm, const QString &text, int width);
     QStringList GetTextLinesByRectSize(const QFontMetrics &fm, const QString &text, const QSize &size);
     void PaintStrokeText(QPainter *painter, const QRect &rect, const QString &text, const QFont &font, int strokeWidth = 2, const QColor &strokeColor = QColor(0xffffff), const QTextOption &option = QTextOption());
+
 protected:
     virtual void paintEvent(QPaintEvent *event) override;
 private slots:
     void hideTextLabel();
     void showTextLabel();
-
+signals:
+    void SendMessageBox(const QString & msg);
+    void talkName(QString & name);
+    void talkBuffer(QString & buffer);
 };
 
 #endif // ASRFRAMEPLAYER_H

@@ -16,20 +16,38 @@ ASRFramePlayer::ASRFramePlayer(QWidget *parent)
     mSherpaOnnxPlayer->InitRecognizer();
     mSherpaNcnnPlayer->InitRecognizer();
 
+
+
     connect(mSoundThreader,&SoundThreader::UpdateMicrophone,[=](QByteArray buffer){
 
-        //mBaseSpeaker->PlaySpeaker(buffer);
-        //  QString ASRFrameIDBuffer= mSherpaOnnxPlayer->RunRecognizer(buffer);
-        // if(!ASRFrameIDBuffer.isEmpty()){
-        //      if(!QString::compare(ASRFrameIDBuffer,QString("小米小米")),Qt::CaseSensitive){
-        //          qDebug()<<"字符串相同分支";
 
-        //      }else{
-        //          qDebug()<<"字符串不同分支" << ASRFrameIDBuffer;
-        //      }
-        //  }
-        ASRFrameTextBuffer= mSherpaNcnnPlayer->RunRecognizer(buffer);
-        update();
+        if(!bNCNNState)
+        {
+            QString talkNameBuffer= mSherpaOnnxPlayer->buildText(buffer);
+            if(!talkNameBuffer.isEmpty()){
+
+                if(QString::localeAwareCompare(talkNameBuffer, tr("小米小米")) == 0){
+                    bNCNNState=true;
+                    //qDebug() << "语音指令已开启";
+                    emit SendMessageBox(tr("语音指令已开启"));
+                    show();
+
+                }else{
+                    qDebug()<<"字符串不同分支" << talkNameBuffer;
+                    emit SendMessageBox(talkNameBuffer);
+                }
+            }
+        }
+        if(bNCNNState){
+             SherpaNcnnPlayer::ResultText ResultBuffer= mSherpaNcnnPlayer->buildText(buffer);
+            mFrameTextBuffer=ResultBuffer.text;
+            if(ResultBuffer.finish){
+                bNCNNState=false;
+                hide();
+                //qDebug() << "语音指令已关闭";
+                emit SendMessageBox(tr( "语音指令已关闭"));
+            }
+        }
 
     });
 
@@ -51,22 +69,16 @@ ASRFramePlayer::~ASRFramePlayer()
 void ASRFramePlayer::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
-    if(ASRFrameTextBuffer.isEmpty())return;
+    if(mFrameTextBuffer.isEmpty())return;
     QPainter painter(this);
     QFont font;
     font.setPointSize(textSize);
     font.setBold(true);
-    // QFontMetrics metrics(font); // 创建 QFontMetrics 对象
-    // int width = metrics.horizontalAdvance(ASRFrameTextBuffer); // 计算文本的水平宽度
-    // int height = metrics.ascent(); // 计算文本的垂直高度
-    // QRect rect((this->width()-width)/2, (this->height()-height)/2, width, height); // 根据widget大小计算居中对齐位置
     QPen fontColor(textColor); // 设置字体颜色为红色
     painter.setPen(fontColor);
-    //return PaintStrokeText(&painter,rect(),ASRFrameTextBuffer,font,strokeWidth,strokeColor,QTextOption(Qt::AlignCenter));
-
     QTextOption option(Qt::AlignCenter | Qt::AlignVCenter);
     option.setWrapMode(QTextOption::WordWrap);
-    return PaintStrokeText(&painter,rect(),ASRFrameTextBuffer,font,strokeWidth,strokeColor,option);
+    return PaintStrokeText(&painter,rect(),mFrameTextBuffer,font,strokeWidth,strokeColor,option);
 }
 
 ///
@@ -140,13 +152,13 @@ QStringList ASRFramePlayer::GetTextLinesByRectSize(const QFontMetrics& fm, const
 /// \param option 对齐方式
 ///
 void ASRFramePlayer::PaintStrokeText(QPainter* painter,
-                                 const QRect& rect,
-                                 const QString& text,
-                                 const QFont& font,
-                                 int strokeWidth,
-                                 const QColor& strokeColor,
-                                 const QTextOption& option
-                                 )
+                                     const QRect& rect,
+                                     const QString& text,
+                                     const QFont& font,
+                                     int strokeWidth,
+                                     const QColor& strokeColor,
+                                     const QTextOption& option
+                                     )
 {
     painter->save();
     painter->setFont(font);

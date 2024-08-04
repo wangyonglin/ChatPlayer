@@ -1,27 +1,36 @@
 #include "CameraPlayer.h"
 #include <iostream>
 #include <memory>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QPixmap>
 
 CameraPlayer::CameraPlayer(QWidget *parent)
     : QWidget{parent},
     lowerb(cv::Scalar(35, 43, 46)),
     upperb(cv::Scalar(155, 255, 255)),
     framepts(60)//,
-  //  ASRPlayer(new ASRFramePlayer(this))
+
 {
+
     setAttribute(Qt::WA_TranslucentBackground);
     timer = new QTimer(this);
-    // 获取所有可用的摄像头信息
-    QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
 
-    // 显示摄像头列表
-    foreach (const QCameraInfo &cameraInfo, cameras) {
-        qDebug() << "摄像头名称:" << cameraInfo.deviceName();
-        qDebug() << "摄像头描述:" << cameraInfo.description();
-    }
+    QHBoxLayout *iconlayout = new QHBoxLayout(this);
+    microphone = new QLabel(this);
+    microphone->setPixmap(transFontToPixmap(QImage(tr(":/images/iconfont/microphone.png"))));
+    microphone->setContentsMargins(5,5,5,5);
+    iconlayout->addWidget(microphone);
+    iconlayout->setAlignment(Qt::AlignRight|Qt::AlignTop);
+    setLayout(iconlayout);
 
+    microphone->hide();
 }
-
+QPixmap CameraPlayer::transFontToPixmap(const QImage & image)
+{
+    QImage scaledImage =image.scaled(32, 32, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    return QPixmap::fromImage(scaledImage);
+}
 void CameraPlayer::InitMatting(cv::Scalar &lowerb, cv::Scalar &upperb)
 {
     this->lowerb=lowerb;
@@ -89,15 +98,26 @@ void CameraPlayer::Stop()
 
 void CameraPlayer::InitASRFramePlayer(const QRect &rect,int fontsize,const QColor &fontcolor)
 {
-   // if(!ASRPlayer){
-        ASRPlayer=new ASRFramePlayer(this);
+    ASRPlayer=new ASRFramePlayer(this);
+
+
         ASRPlayer->setGeometry(rect);
         ASRPlayer->setFontSize(fontsize);
         ASRPlayer->setFontColor(fontcolor);
         QVBoxLayout * mainlayout= new QVBoxLayout(ASRPlayer);
         mainlayout->addWidget(ASRPlayer);
         setLayout(mainlayout);
-   // }
+        connect(ASRPlayer,&ASRFramePlayer::SendMessageBox,[=](const QString & msg){
+            if(QString::localeAwareCompare(msg, tr("语音指令已开启")) == 0){
+                microphone->show();
+                qDebug() << "语音指令已开启";
+            }else  if(QString::localeAwareCompare(msg, tr("语音指令已关闭")) == 0){
+                microphone->hide();
+                qDebug() << "语音指令已关闭";
+            }
+
+        });
+
 
 }
 
@@ -105,10 +125,26 @@ void CameraPlayer::InitASRFramePlayer(const QRect &rect,int fontsize,const QColo
 
 
 
+void CameraPlayer::talkBuffer(QString & msg)
+{
+
+}
+
+
+
 void CameraPlayer::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
+
+    QFont font;
+    font.setBold(true);
+    font.setPointSize(12);
+    QPen pen;
+    pen.setWidth(2); // 设置描边的宽度
+    pen.setColor(Qt::red); // 设置描边的颜色
     QPainter painter(this);
+    painter.setFont(font);
+    painter.setPen(pen);
     painter.drawRect(rect());
     if(!bufferImage.isNull())
         painter.drawPixmap(rect(), bufferImage);

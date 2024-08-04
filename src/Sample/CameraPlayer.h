@@ -32,7 +32,12 @@ public:
     void InitMatting(int lowerbbule, int lowerbgreen, int lowerbred, int upperbbule, int upperbgreen, int upperbred);
     void FreeMatting();
     void InitASRFramePlayer(const QRect &rect,int fontsize,const QColor &fontcolor);
+
+    void AddIcon(const QImage &icon);
+    QPixmap transFontToPixmap(const QImage &image);
 private:
+
+    QLabel *microphone;
     ASRFramePlayer *ASRPlayer;
     std::unique_ptr<cv::VideoCapture> capture;
     QPixmap bufferImage;
@@ -54,6 +59,8 @@ protected:
     virtual void paintEvent(QPaintEvent *event) override;
     virtual void moveEvent(QMoveEvent *event) override;
     virtual void resizeEvent(QResizeEvent *event) override;
+private slots:
+    void talkBuffer(QString &msg);
 };
 
 #endif // CAMERAPLAYER_H

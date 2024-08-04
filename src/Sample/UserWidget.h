@@ -8,7 +8,7 @@
 #include "QFFmpegPlayer.h"
 #include "CameraPlayer.h"
 #include "MaskPlayer.h"
-
+#include "GamePlayer.h"
 class UserWidget : public QWidget
 {
     Q_OBJECT
@@ -17,6 +17,7 @@ public:
     UserWidget(QWidget *parent = nullptr);
     ~UserWidget();
 private:
+    GamePlayer *qGamePlayer;
     CameraPlayer *qCameraPlayer;
     QFFmpegPlayer *qFFmpegPlayer;
     MaskPlayer * qMaskPlayer;

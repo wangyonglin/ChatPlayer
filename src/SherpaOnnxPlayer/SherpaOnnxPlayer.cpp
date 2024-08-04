@@ -23,7 +23,7 @@ bool SherpaOnnxPlayer::InitRecognizer()
     return true;
 }
 
-QString SherpaOnnxPlayer::RunRecognizer(QByteArray & bytes)
+QString SherpaOnnxPlayer::buildText(const QByteArray & bytes)
 {
     if(bytes.isEmpty())return QString();
     // 确保data的大小是4的倍数
